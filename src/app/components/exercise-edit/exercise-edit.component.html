@@ -1,0 +1,48 @@
+@if (form) {
+<form [formGroup]="form">
+  <div class="input-columns">
+    <div class="column">
+      <mat-form-field>
+        <mat-label>Titel</mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Omschrijving</mat-label>
+        <textarea matInput placeholder="Uitleg van de opgave" formControlName="description" rows="3"></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Punten</mat-label>
+        <input matInput formControlName="points" type="number" />
+      </mat-form-field>
+    </div>
+    <div class="column">
+      <button mat-raised-button type="button" (click)="addQuestion()">Vraag toevoegen</button>
+      <div formArrayName="questions" class="questions">
+        @for (pair of questions.controls; track pair; let i = $index) {
+        <div [formGroupName]="i">
+          <mat-form-field>
+            <mat-label>Omschrijving</mat-label>
+            <input matInput formControlName="description" type="number" />
+          </mat-form-field>
+          <button mat-mini-fab (click)="removeQuestion(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        }
+      </div>
+    </div>
+  </div>
+  <div>
+    <button
+      mat-raised-button
+      color="accent"
+      class="save-button"
+      type="submit"
+      [disabled]="form.invalid || !isFormChanged()"
+      (click)="save()"
+    >
+      Save
+    </button>
+  </div>
+</form>
+}
