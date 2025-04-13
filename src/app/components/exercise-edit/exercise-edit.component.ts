@@ -11,6 +11,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { deepEqual } from '@app/utils';
 import { ExcerciseService } from '@app/services';
 import { take } from 'rxjs';
+import Docxtemplater from 'docxtemplater';
+import PizZip from 'pizzip';
+import PizZipUtils from 'pizzip/utils/index.js';
+import { saveAs } from 'file-saver';
+
+function loadFile(url, callback) {
+  PizZipUtils.getBinaryContent(url, callback);
+}
 
 @Component({
   selector: 'app-exercise-edit',
@@ -92,5 +100,30 @@ export class ExerciseEditComponent implements OnInit {
   isFormChanged(): boolean {
     const formValue = { ...this.form.value };
     return !deepEqual(this.initialExercise, formValue);
+  }
+
+  generate() {
+    loadFile('https://docxtemplater.com/tag-example.docx', function (error: Error | null, content: string) {
+      if (error) {
+        throw error;
+      }
+      const zip = new PizZip(content);
+      const doc = new Docxtemplater(zip, {
+        paragraphLoop: true,
+        linebreaks: true,
+      });
+      doc.render({
+        first_name: 'John',
+        last_name: 'Doe',
+        phone: '0652455478',
+        description: 'New Website',
+      });
+      const out = doc.getZip().generate({
+        type: 'blob',
+        mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
+      // Output the document using Data-URI
+      saveAs(out, 'output.docx');
+    });
   }
 }

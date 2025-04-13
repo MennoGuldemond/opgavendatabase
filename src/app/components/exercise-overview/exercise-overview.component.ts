@@ -1,11 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { map, Observable } from 'rxjs';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { Exercise } from '@app/models';
-import { ExcerciseService } from '@app/services';
+import { ExcerciseService, GoogleDriveService } from '@app/services';
+import { replacePlaceholdersAndDownload } from '@app/utils';
 
 @Component({
   selector: 'app-exercise-overview',
@@ -15,19 +15,32 @@ import { ExcerciseService } from '@app/services';
 })
 export class ExerciseOverviewComponent implements OnInit {
   private router = inject(Router);
-  private exerciseServive = inject(ExcerciseService);
+  // private exerciseServive = inject(ExcerciseService);
+  private driveService = inject(GoogleDriveService);
 
-  exercises$: Observable<Exercise[]>;
-  displayedColumns: string[] = ['title', 'points'];
-  dataSource: MatTableDataSource<Exercise>;
+  files: any[];
+  displayedColumns: string[] = ['name'];
+  dataSource: MatTableDataSource<any>;
 
-  ngOnInit() {
-    this.exercises$ = this.exerciseServive.getAll().pipe(
-      map((exercises) => {
-        this.dataSource = new MatTableDataSource(exercises);
-        return exercises;
-      })
-    );
+  async ngOnInit() {
+    await this.loadDocxFiles();
+  }
+
+  async loadDocxFiles() {
+    await this.driveService.trySilentLogin();
+    this.files = await this.driveService.listDocxFiles();
+    this.dataSource = new MatTableDataSource(this.files);
+    // console.log(this.files);
+  }
+
+  async generateFile(row: any) {
+    const content = await this.driveService.downloadDocxFile(row.id);
+
+    const placeholderData = {
+      date: new Date().toLocaleDateString(),
+    };
+
+    replacePlaceholdersAndDownload(content, placeholderData, `Generated - ${row.name}`);
   }
 
   newExercise() {

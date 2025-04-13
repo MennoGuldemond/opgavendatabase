@@ -10,6 +10,12 @@ export const environment = {
     messagingSenderId: '791040557585',
     measurementId: 'G-MRCE80M34K',
   },
+  googleDrive: {
+    apiKey: 'AIzaSyDeXVSwmYe0vHfLbreq_LnG7TuUiiqIkjU',
+    clientId: '1083195554631-5givkq8hsmroki2irc0afkclfh06a2pb.apps.googleusercontent.com',
+    discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
+    scope: 'https://www.googleapis.com/auth/drive.readonly',
+  },
   production: false,
   version: packageJson.version,
 };
