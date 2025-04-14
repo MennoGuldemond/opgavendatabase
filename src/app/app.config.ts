@@ -8,6 +8,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { environment } from '@env/environment';
+import { provideQuillConfig } from 'ngx-quill';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -21,5 +22,11 @@ export const appConfig: ApplicationConfig = {
     provideFirestore(() => getFirestore()),
     provideDatabase(() => getDatabase()),
     { provide: FIREBASE_OPTIONS, useValue: environment.firebase },
+    provideQuillConfig({
+      modules: {
+        syntax: true,
+        toolbar: [],
+      },
+    }),
   ],
 };

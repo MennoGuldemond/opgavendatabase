@@ -1,0 +1,9 @@
+<quill-editor
+  [formControl]="editorControl"
+  (onContentChanged)="onContentChanged()"
+  [styles]="{ height: '300px' }"
+  [modules]="{
+    toolbar: [['bold', 'italic'], ['code-block'], ['formula']]
+  }"
+  format="html"
+></quill-editor>

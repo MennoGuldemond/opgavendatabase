@@ -16,6 +16,10 @@ export const environment = {
     discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'],
     scope: 'https://www.googleapis.com/auth/drive.readonly',
   },
+  ckeditor: {
+    licenseKey:
+      'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NzYxMjQ3OTksImp0aSI6Ijk2MjkxNDVkLTU2MmItNDA2Yi1hNTE1LWVjYTMzY2JkZjJjMSIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiXSwiZmVhdHVyZXMiOlsiRFJVUCJdLCJ2YyI6IjUyYjQyMjNlIn0.I4RWCEKbkWRB4Ic4RMA3SDytWS4pDGG5E1Fl3F3FxTcvawAJgkBJYTpAJU5XvLHcYcq9n9_C83IYFk9v0vXtqg',
+  },
   production: false,
   version: packageJson.version,
 };
